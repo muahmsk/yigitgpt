@@ -1,5 +1,4 @@
 import express from "express";
-import fetch from "node-fetch";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -11,15 +10,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
 if (!GROQ_API_KEY) {
-  console.error("GROQ_API_KEY yok!");
+  console.error("GROQ_API_KEY bulunamadı!");
   process.exit(1);
 }
 
 app.post("/api/chat", async (req, res) => {
   try {
-    const userMessage = req.body.message;
-    const model = req.body.model || "llama-3.3-70b-versatile";
+    const { message, model } = req.body;
 
     const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -28,8 +27,8 @@ app.post("/api/chat", async (req, res) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model,
-        messages: [{ role: "user", content: userMessage }]
+        model: model || "llama-3.3-70b-versatile",
+        messages: [{ role: "user", content: message }]
       })
     });
 
@@ -37,11 +36,13 @@ app.post("/api/chat", async (req, res) => {
     if (!r.ok) return res.status(500).json(data);
 
     res.json({ reply: data.choices[0].message.content });
-  } catch (e) {
-    console.error(e);
+
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Backend hata verdi" });
   }
 });
 
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log("YiğitGPT çalışıyor. Port:", PORT));
+
