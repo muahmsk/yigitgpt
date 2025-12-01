@@ -1,0 +1,47 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>YiğitGPT</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dark">
+
+<div id="app">
+  <div class="sidebar">
+    <div class="top">
+      <h2>YiğitGPT</h2>
+      <button onclick="toggleTheme()">🌗</button>
+    </div>
+
+    <select id="modelSelect">
+      <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
+      <option value="llama3-8b-8192">Llama 3 8B (Hızlı)</option>
+      <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+    </select>
+
+    <button onclick="newChat()">+ Yeni Sohbet</button>
+    <button onclick="deleteChat()">🗑️ Sohbet Sil</button>
+    <button onclick="clearAll()">🔥 Hepsini Sil</button>
+    <button onclick="exportChat('txt')">⬇ Sohbeti TXT İndir</button>
+    <button onclick="exportChat('json')">⬇ Sohbeti JSON İndir</button>
+
+    <div id="chatList"></div>
+  </div>
+
+  <div class="chat">
+    <div id="messages"></div>
+
+    <div class="inputBar">
+      <button onclick="speak()">🔊</button>
+      <input id="input" placeholder="YiğitGPT'e mesaj yaz..." autocomplete="off" />
+      <button onclick="send()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
