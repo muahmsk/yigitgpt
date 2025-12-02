@@ -64,21 +64,34 @@ async function send() {
   render();
 
   const modelSelect = document.getElementById("modelSelect");
-  const model = modelSelect ? modelSelect.value : "mixtral-8x7b-32768";
+  const model = modelSelect ? modelSelect.value : "llama-3.3-70b-versatile";
 
   try {
-    const res = await fetch("/chat", {
+    // ✅ BACKEND İLE UYUMLU DOĞRU ENDPOINT
+    const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: text, model }),
     });
 
     const data = await res.json();
-    chat.messages.push({ r: "bot", t: data.reply || "Yanıt alınamadı." });
+
+    chat.messages.push({
+      r: "bot",
+      t: data.reply || "Yanıt alınamadı."
+    });
+
     save();
     render();
+
   } catch (err) {
-    chat.messages.push({ r: "bot", t: "Sunucu hatası oluştu." });
+    console.error(err);
+
+    chat.messages.push({
+      r: "bot",
+      t: "Sunucu hatası oluştu."
+    });
+
     save();
     render();
   }
