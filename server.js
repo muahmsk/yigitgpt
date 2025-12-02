@@ -36,7 +36,6 @@ app.post("/api/chat", async (req, res) => {
     if (!r.ok) return res.status(500).json(data);
 
     res.json({ reply: data.choices[0].message.content });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Backend hata verdi" });
@@ -45,4 +44,3 @@ app.post("/api/chat", async (req, res) => {
 
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log("YiğitGPT çalışıyor. Port:", PORT));
-
