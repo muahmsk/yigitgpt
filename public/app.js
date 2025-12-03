@@ -116,4 +116,53 @@ function addMessage(role, text){
   document.getElementById("messages").appendChild(div);
   document.getElementById("messages").scrollTop = 99999;
 }
+/* ==== SOL MENÜ FONKSİYONLARI ==== */
+
+function newChat() {
+  const messages = document.getElementById("messages");
+  messages.innerHTML = "";
+  addSystem("Yeni sohbet başlatıldı.");
+}
+
+function deleteChat() {
+  const messages = document.getElementById("messages");
+  const all = messages.querySelectorAll(".message");
+  if(all.length === 0) return alert("Silinecek mesaj yok");
+  all[all.length - 1].remove();
+}
+
+function clearAll() {
+  const messages = document.getElementById("messages");
+  messages.innerHTML = "";
+}
+
+function exportChat(type) {
+  const messages = document.getElementById("messages");
+  const all = [...messages.children].map(m => m.innerText);
+
+  if(type === "txt") {
+    download("chat.txt", all.join("\n\n"));
+  }
+
+  if(type === "json") {
+    download("chat.json", JSON.stringify(all, null, 2));
+  }
+}
+
+function download(name, content) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([content]));
+  a.download = name;
+  a.click();
+}
+
+/* ==== SİSTEM MESAJI ==== */
+function addSystem(text) {
+  const messages = document.getElementById("messages");
+  const div = document.createElement("div");
+  div.className = "message bot";
+  div.innerText = text;
+  messages.appendChild(div);
+}
+
 
