@@ -4,19 +4,31 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ChampionGPT</title>
+
+<!-- FAVICON (logonun gözükmesi için) -->
+<link rel="icon" type="image/jpeg" href="images.jfif">
+
 <link rel="stylesheet" href="style.css"/>
 </head>
+
 <body class="dark">
 
 <!-- LOGIN / REGISTER -->
 <div id="authBox">
   <h2 id="authTitle">Champion Giriş</h2>
-  <input id="username" placeholder="Kullanıcı adı">
-  <input id="password" type="password" placeholder="Şifre">
-  <button onclick="login()">Giriş Yap</button>
-  <p id="switchAuth" onclick="toggleAuth()">Hesabın yok mu? Kayıt ol</p>
+
+  <input id="username" placeholder="Kullanıcı adı" autocomplete="username">
+  <input id="password" type="password" placeholder="Şifre" autocomplete="current-password">
+
+  <!-- KAYIT şifresi (gizli başlar) -->
+  <input id="password2" type="password" placeholder="Şifre tekrar" style="display:none">
+
+  <button id="authBtn" onclick="login()">Giriş Yap</button>
+
+  <p id="switchAuth" style="cursor:pointer">Hesabın yok mu? Kayıt ol</p>
 </div>
 
+<!-- UYGULAMA -->
 <div id="app" style="display:none">
 
 <aside class="sidebar">
@@ -41,7 +53,7 @@
   <div id="messages" class="messages"></div>
 
   <div class="inputArea">
-    <textarea id="input" placeholder="ChampionGPT'e yaz..."></textarea>
+    <textarea id="input" placeholder="ChampionGPT'e yaz..." autocomplete="off"></textarea>
     <button class="sendBtn" onclick="send()">➤</button>
   </div>
 </main>
@@ -51,6 +63,3 @@
 <script src="app.js"></script>
 </body>
 </html>
-
-
-
