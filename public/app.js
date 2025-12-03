@@ -72,3 +72,48 @@ input.addEventListener("keydown", function(e) {
     send();
   }
 });
+// ---------------- CHAT SYSTEM ----------------
+
+async function send(){
+  const input = document.getElementById("input");
+  const msg = input.value.trim();
+  if(!msg) return;
+
+  addMessage("user", msg);
+  input.value = "";
+
+  const loading = document.createElement("div");
+  loading.className = "message bot loading";
+  loading.innerHTML = "<span>.</span><span>.</span><span>.</span>";
+  document.getElementById("messages").appendChild(loading);
+
+  const model = document.getElementById("modelSelect").value;
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: msg, model })
+    });
+
+    const data = await res.json();
+    loading.remove();
+    addMessage("bot", data.reply || "Cevap yok");
+
+  } catch (err) {
+    loading.remove();
+    addMessage("bot", "Sunucu hatası.");
+  }
+}
+
+
+// ---------------- MESSAGE RENDER ----------------
+
+function addMessage(role, text){
+  const div = document.createElement("div");
+  div.className = "message " + role;
+  div.innerText = text;
+  document.getElementById("messages").appendChild(div);
+  document.getElementById("messages").scrollTop = 99999;
+}
+
