@@ -140,6 +140,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("input");
+
+  if (!input) {
+    alert("INPUT BULUNAMADI");
+    return;
+  }
+
+  console.log("Input bulundu ✅");
+
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      console.log("ENTER BASILDI ✅");
+      send();
+    }
+  });
+});
+
 
 
 
