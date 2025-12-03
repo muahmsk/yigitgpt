@@ -130,3 +130,18 @@ textarea {
   color:#aaa;
   cursor:pointer;
 }
+#authBox {
+  z-index: 9999;
+}
+
+#authBox * {
+  pointer-events: auto !important;
+}
+
+#switchAuth, #backLogin {
+  cursor: pointer;
+  pointer-events: auto !important;
+  z-index: 99999;
+  position: relative;
+}
+
