@@ -165,5 +165,8 @@ function addSystem(text) {
   messages.appendChild(div);
 }
 
+document.getElementById("switchAuth")?.addEventListener("click", showRegister);
+document.getElementById("backLogin")?.addEventListener("click", showLogin);
+
 
 
