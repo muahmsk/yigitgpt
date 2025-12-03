@@ -66,6 +66,32 @@ body.light .btn {
   opacity: .8;
 }
 
+/* PROFILE */
+.profile {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.profile img{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #19c37d;
+}
+
+.profile button{
+  padding:8px;
+  background:#19c37d;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  color:black;
+}
+
+/* CHAT LIST */
 .chatList {
   margin-top: 10px;
   overflow-y: auto;
@@ -223,20 +249,46 @@ code {
   100% {opacity:.2}
 }
 
+/* LOGIN UI */
+#authBox{
+ position:fixed;
+ inset:0;
+ background:#101014;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ z-index:999;
+}
+
+#authBox h2{
+ margin-bottom:10px;
+}
+
+#authBox input{
+ padding:12px;
+ border-radius:8px;
+ border:none;
+ width:220px;
+ margin-bottom:10px;
+ outline:none;
+ font-size:15px;
+}
+
+#authBox button{
+ padding:12px;
+ width:220px;
+ border-radius:8px;
+ background:#19c37d;
+ border:none;
+ cursor:pointer;
+ font-weight:bold;
+}
+
 /* MOBILE */
 @media(max-width:768px){
   #app { flex-direction: column; }
   .sidebar { width: 100%; }
   .messages { padding: 15px; }
 }
-#authBox{
- position:fixed; inset:0;
- background:#202123;
- display:flex;flex-direction:column;
- align-items:center;justify-content:center;
- z-index:999;
-}
 
-.profile img{
- width:80px;height:80px;border-radius:50%;object-fit:cover;
-}
