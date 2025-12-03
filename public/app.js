@@ -187,3 +187,21 @@ window.onload = ()=>{
     document.getElementById("app").style.display="none";
   }
 }
+function showRegister(){
+  document.getElementById("authTitle").innerText = "YiğitGPT Kayıt Ol";
+  document.getElementById("password2").style.display = "block";
+  document.getElementById("loginBtn").innerText = "Kayıt Ol";
+  document.getElementById("loginBtn").onclick = register;
+  document.querySelector("p").style.display = "none";
+  document.getElementById("backLogin").style.display = "block";
+}
+
+function showLogin(){
+  document.getElementById("authTitle").innerText = "YiğitGPT Giriş";
+  document.getElementById("password2").style.display = "none";
+  document.getElementById("loginBtn").innerText = "Giriş Yap";
+  document.getElementById("loginBtn").onclick = login;
+  document.querySelector("p").style.display = "block";
+  document.getElementById("backLogin").style.display = "none";
+}
+
