@@ -6,9 +6,6 @@
   <title>YiğitGPT</title>
 
   <link rel="stylesheet" href="style.css" />
-
-  <!-- MARKDOWN -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body class="dark">
 
@@ -18,7 +15,7 @@
   <aside class="sidebar">
     <h1>YiğitGPT</h1>
 
-    <button class="btn" onclick="toggleTheme()">🌗 Tema</button>
+    <button class="btn" onclick="toggleTheme()">🌗 Tema Değiştir</button>
 
     <select id="modelSelect">
       <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
@@ -29,8 +26,8 @@
     <button class="btn" onclick="newChat()">➕ Yeni Sohbet</button>
     <button class="btn" onclick="deleteChat()">🗑️ Sohbet Sil</button>
     <button class="btn" onclick="clearAll()">🔥 Hepsini Sil</button>
-    <button class="btn" onclick="exportChat('txt')">TXT</button>
-    <button class="btn" onclick="exportChat('json')">JSON</button>
+    <button class="btn" onclick="exportChat('txt')">⬇ TXT</button>
+    <button class="btn" onclick="exportChat('json')">⬇ JSON</button>
 
     <div id="chatList" class="chatList"></div>
   </aside>
@@ -40,9 +37,8 @@
     <div id="messages" class="messages"></div>
 
     <div class="inputArea">
-      <input type="file" id="fileInput" accept=".txt,.json,.js,.html,.css,.py" />
       <button class="iconBtn" onclick="speak()">🔊</button>
-      <input id="input" placeholder="YiğitGPT'e yaz..." />
+      <textarea id="input" placeholder="YiğitGPT'e mesaj yaz..." autocomplete="off"></textarea>
       <button class="sendBtn" onclick="send()">➤</button>
     </div>
   </main>
