@@ -78,3 +78,48 @@ window.onload = ()=>{
 };
 
 /* ⚠️ Chat kodların burada kalabilir (send, chat vs çalışır) */
+let isRegister = false;
+
+function toggleAuth() {
+  isRegister = !isRegister;
+  document.getElementById("authTitle").innerText = isRegister ? "YiğitGPT Kayıt Ol" : "YiğitGPT Giriş";
+  document.getElementById("switchAuth").innerText = isRegister ? "Zaten hesabın var mı? Giriş yap" : "Hesabın yok mu? Kayıt ol";
+}
+
+function login(){
+  const u = username.value;
+  const p = password.value;
+
+  if(!u || !p) return alert("Alanları doldur");
+
+  const users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if(isRegister){
+    if(users[u]) return alert("Bu kullanıcı var");
+    users[u] = p;
+    localStorage.setItem("users",JSON.stringify(users));
+    alert("Kayıt başarılı");
+    toggleAuth();
+  } else {
+    if(users[u] !== p) return alert("Hatalı giriş");
+    localStorage.setItem("session",u);
+    startApp();
+  }
+}
+
+function startApp(){
+  document.getElementById("authBox").style.display="none";
+  document.getElementById("app").style.display="flex";
+}
+
+function logout(){
+  localStorage.removeItem("session");
+  location.reload();
+}
+
+window.onload = ()=>{
+  const s = localStorage.getItem("session");
+  if(s) startApp();
+}
+
+
