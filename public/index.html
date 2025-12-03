@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>YiğitGPT</title>
-
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>YiğitGPT</title>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body class="dark">
 
+<!-- LOGIN -->
+<div id="authBox">
+<h2>YiğitGPT Giriş</h2>
+<input id="username" placeholder="Kullanıcı adı">
+<input id="password" type="password" placeholder="Şifre">
+<button onclick="login()">Giriş Yap</button>
+</div>
+
 <div id="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h1>YiğitGPT</h1>
+<aside class="sidebar">
+<div class="profile">
+<img id="profileImg" src="default.png"/>
+<input type="file" id="uploadInput" hidden onchange="uploadPhoto()"/>
+<button onclick="uploadInput.click()">🖼 Profil</button>
+</div>
 
-    <button class="btn" onclick="toggleTheme()">🌗 Tema Değiştir</button>
+<select id="modelSelect">
+<option value="llama-3.3-70b-versatile">Llama 3.3</option>
+<option value="mixtral-8x7b-32768">Mixtral</option>
+</select>
 
-    <select id="modelSelect">
-      <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
-      <option value="llama3-8b-8192">Llama 3 (Hızlı)</option>
-      <option value="mixtral-8x7b-32768">Mixtral</option>
-    </select>
+<button onclick="newChat()">+ Yeni Sohbet</button>
+<button onclick="deleteChat()">🗑 Sil</button>
+<button onclick="clearAll()">🔥 Hepsi</button>
+<button onclick="exportChat('txt')">TXT</button>
+<button onclick="exportChat('json')">JSON</button>
+<button onclick="logout()">🚪 Çıkış</button>
 
-    <button class="btn" onclick="newChat()">➕ Yeni Sohbet</button>
-    <button class="btn" onclick="deleteChat()">🗑️ Sohbet Sil</button>
-    <button class="btn" onclick="clearAll()">🔥 Hepsini Sil</button>
-    <button class="btn" onclick="exportChat('txt')">⬇ TXT</button>
-    <button class="btn" onclick="exportChat('json')">⬇ JSON</button>
+<div id="chatList"></div>
+</aside>
 
-    <div id="chatList" class="chatList"></div>
-  </aside>
+<main class="chatArea">
+<div id="messages"></div>
 
-  <!-- CHAT -->
-  <main class="chatArea">
-    <div id="messages" class="messages"></div>
-
-    <div class="inputArea">
-      <button class="iconBtn" onclick="speak()">🔊</button>
-      <textarea id="input" placeholder="YiğitGPT'e mesaj yaz..." autocomplete="off"></textarea>
-      <button class="sendBtn" onclick="send()">➤</button>
-    </div>
-  </main>
+<div class="inputArea">
+<button onclick="speak()">🔊</button>
+<textarea id="input" placeholder="YiğitGPT'e yaz..."></textarea>
+<button onclick="send()">➤</button>
+</div>
+</main>
 
 </div>
 
