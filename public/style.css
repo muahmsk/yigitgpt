@@ -229,3 +229,14 @@ code {
   .sidebar { width: 100%; }
   .messages { padding: 15px; }
 }
+#authBox{
+ position:fixed; inset:0;
+ background:#202123;
+ display:flex;flex-direction:column;
+ align-items:center;justify-content:center;
+ z-index:999;
+}
+
+.profile img{
+ width:80px;height:80px;border-radius:50%;object-fit:cover;
+}
