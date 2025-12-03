@@ -37,13 +37,13 @@ function register(){
 
 // ---------------- AUTH SCREEN ----------------
 function showRegister(){
-  document.getElementById("authTitle").innerText = "YiğitGPT Kayıt";
+  document.getElementById("authTitle").innerText = "ChampionGPT Kayıt";
   document.getElementById("authBtn").innerText = "Kayıt Ol";
   document.getElementById("authBtn").onclick = register;
 }
 
 function showLogin(){
-  document.getElementById("authTitle").innerText = "YiğitGPT Giriş";
+  document.getElementById("authTitle").innerText = "ChampionGPT Giriş";
   document.getElementById("authBtn").innerText = "Giriş Yap";
   document.getElementById("authBtn").onclick = login;
 }
@@ -164,5 +164,6 @@ function addSystem(text) {
   div.innerText = text;
   messages.appendChild(div);
 }
+
 
 
