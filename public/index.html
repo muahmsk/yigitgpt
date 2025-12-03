@@ -8,57 +8,44 @@
 </head>
 <body class="dark">
 
-<!-- AUTH -->
+<!-- LOGIN / REGISTER -->
 <div id="authBox">
-
-<h2 id="authTitle">YiğitGPT Giriş</h2>
-
-<input id="username" placeholder="Kullanıcı adı">
-<input id="password" type="password" placeholder="Şifre">
-<input id="password2" type="password" placeholder="Şifre tekrar" style="display:none">
-
-<button id="authBtn" onclick="login()">Giriş Yap</button>
-
-<p id="toggleText" onclick="showRegister()">Hesabın yok mu? Kayıt ol</p>
-<p id="backLogin" onclick="showLogin()" style="display:none">← Girişe dön</p>
-
+  <h2 id="authTitle">YiğitGPT Giriş</h2>
+  <input id="username" placeholder="Kullanıcı adı">
+  <input id="password" type="password" placeholder="Şifre">
+  <button onclick="login()">Giriş Yap</button>
+  <p id="switchAuth" onclick="toggleAuth()">Hesabın yok mu? Kayıt ol</p>
 </div>
 
-<!-- APP -->
 <div id="app" style="display:none">
 
 <aside class="sidebar">
+  <h1>YiğitGPT</h1>
 
-<div class="profile">
-<img id="profileImg" src="default.png">
-</div>
+  <select id="modelSelect">
+    <option value="llama-3.3-70b-versatile">Llama 3.3</option>
+    <option value="mixtral-8x7b-32768">Mixtral</option>
+  </select>
 
-<select id="modelSelect">
-<option value="llama-3.3-70b-versatile">Llama 3.3</option>
-<option value="mixtral-8x7b-32768">Mixtral</option>
-</select>
+  <button onclick="newChat()">+ Yeni Sohbet</button>
+  <button onclick="deleteChat()">🗑 Sil</button>
+  <button onclick="clearAll()">🔥 Hepsi</button>
+  <button onclick="exportChat('txt')">TXT</button>
+  <button onclick="exportChat('json')">JSON</button>
+  <button onclick="logout()">🚪 Çıkış</button>
 
-<button onclick="newChat()">+ Yeni Sohbet</button>
-<button onclick="deleteChat()">🗑 Sil</button>
-<button onclick="clearAll()">🔥 Hepsi</button>
-<button onclick="exportChat('txt')">TXT</button>
-<button onclick="exportChat('json')">JSON</button>
-<button onclick="logout()">🚪 Çıkış</button>
-
-<div id="chatList"></div>
-
+  <div id="chatList"></div>
 </aside>
 
 <main class="chatArea">
-<div id="messages"></div>
+  <div id="messages" class="messages"></div>
 
-<div class="inputArea">
-<button onclick="speak()">🔊</button>
-<textarea id="input" placeholder="YiğitGPT'e yaz..."></textarea>
-<button onclick="send()">➤</button>
-</div>
-
+  <div class="inputArea">
+    <textarea id="input" placeholder="YiğitGPT'e yaz..."></textarea>
+    <button class="sendBtn" onclick="send()">➤</button>
+  </div>
 </main>
+
 </div>
 
 <script src="app.js"></script>
