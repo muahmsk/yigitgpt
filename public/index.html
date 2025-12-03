@@ -1,51 +1,45 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>YiğitGPT</title>
 
-  <!-- FONT -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="dark">
 
-<div class="app">
+<div id="app">
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="top">
-      <h1>YiğitGPT</h1>
-      <button onclick="toggleTheme()" class="themeBtn">🌗</button>
-    </div>
+    <h1>YiğitGPT</h1>
+
+    <button class="btn" onclick="toggleTheme()">🌗 Tema Değiştir</button>
 
     <select id="modelSelect">
       <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
       <option value="llama3-8b-8192">Llama 3 (Hızlı)</option>
-      <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+      <option value="mixtral-8x7b-32768">Mixtral</option>
     </select>
 
     <button class="btn" onclick="newChat()">➕ Yeni Sohbet</button>
     <button class="btn" onclick="deleteChat()">🗑️ Sohbet Sil</button>
     <button class="btn" onclick="clearAll()">🔥 Hepsini Sil</button>
-    <button class="btn" onclick="exportChat('txt')">⬇ TXT İndir</button>
-    <button class="btn" onclick="exportChat('json')">⬇ JSON İndir</button>
+    <button class="btn" onclick="exportChat('txt')">⬇ TXT</button>
+    <button class="btn" onclick="exportChat('json')">⬇ JSON</button>
 
     <div id="chatList" class="chatList"></div>
   </aside>
-
 
   <!-- CHAT -->
   <main class="chatArea">
     <div id="messages" class="messages"></div>
 
     <div class="inputArea">
-      <button onclick="speak()" class="iconBtn">🔊</button>
-      <input id="input"
-             placeholder="YiğitGPT'e mesaj yaz..."
-             autocomplete="off" />
-      <button onclick="send()" class="sendBtn">➤</button>
+      <button class="iconBtn" onclick="speak()">🔊</button>
+      <input id="input" placeholder="YiğitGPT'e mesaj yaz..." autocomplete="off" />
+      <button class="sendBtn" onclick="send()">➤</button>
     </div>
   </main>
 
