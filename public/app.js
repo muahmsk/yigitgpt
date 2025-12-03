@@ -1,63 +1,60 @@
-let chats = JSON.parse(localStorage.getItem("yigitgpt_chats")) || [];
+/* MARKDOWN PARSER (mini) */
+function md(text) {
+  text = text
+    .replace(/```([^`]+)```/gs, '<pre><code>$1</code></pre>')
+    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+    .replace(/\*(.*?)\*/g, "<i>$1</i>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\n/g, "<br>");
+  return text;
+}
+
+/* YAZMA EFEKTİ */
+function typeEffect(text, element) {
+  let i = 0;
+  element.innerHTML = "";
+  const speed = 8;
+
+  function typing() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    }
+  }
+  typing();
+}
+
+/* GLOBAL */
+let chats = JSON.parse(localStorage.getItem("ygpt_chats")) || [];
 let currentChat = null;
 
-/* ========== THEME ========== */
-function toggleTheme(){
-  document.body.className =
-    document.body.className === "dark" ? "light" : "dark";
-}
-
-/* ========== CHAT SYSTEM ========== */
-
-function newChat(){
-  const chat = { id: Date.now(), title: "Yeni Sohbet", messages: [] };
-  chats.push(chat);
-  currentChat = chat.id;
-  save();
-  render();
-}
-
-function deleteChat(){
-  chats = chats.filter(c => c.id !== currentChat);
-  currentChat = chats[0]?.id || null;
-  save();
-  render();
-}
-
-function clearAll(){
-  chats = [];
-  currentChat = null;
-  save();
-  render();
-}
-
-/* ========== SEND MESSAGE ========== */
-
+/* SEND */
 async function send() {
   const input = document.getElementById("input");
   const text = input.value.trim();
   if (!text) return;
 
   addMessage("user", text);
-  autoTitle(text);
   input.value = "";
+
+  const model = document.getElementById("modelSelect").value;
 
   const loading = document.createElement("div");
   loading.className = "message bot loading";
   loading.innerHTML = "<span>.</span><span>.</span><span>.</span>";
   document.getElementById("messages").appendChild(loading);
 
-  const model = document.getElementById("modelSelect").value;
-
   try {
     const res = await fetch("/api/chat", {
       method: "POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ message:text, model })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text, model }),
     });
 
     const data = await res.json();
     loading.remove();
+
     addMessage("bot", data.reply || "Cevap yok", true);
 
   } catch {
@@ -66,124 +63,122 @@ async function send() {
   }
 }
 
-/* ========== MESSAGE ========== */
-
-function typeEffect(text, el){
-  let i = 0;
-  el.innerHTML = "";
- 	function typing(){
- 	  if(i < text.length){
- 	    el.innerHTML += text[i++];
- 	    setTimeout(typing, 10);
- 	  }
- 	}
-  typing();
-}
-
-function addMessage(role, text, typing=false){
+/* MESAJ EKLEME */
+function addMessage(role, text, typing = false) {
   const div = document.createElement("div");
-  div.className = "message " + role;
+  div.className = `message ${role}`;
 
-  const rendered = marked.parse(text);
-
-  if(typing){
-    let i = 0;
-    function type(){
-      if(i < rendered.length){
-        div.innerHTML += rendered[i++];
-        setTimeout(type, 5);
-      }
-    }
-    type();
-  }else{
-    div.innerHTML = rendered;
+  if (typing) {
+    div.innerHTML = "";
+    document.getElementById("messages").appendChild(div);
+    typeEffect(md(text), div);
+  } else {
+    div.innerHTML = md(text);
+    document.getElementById("messages").appendChild(div);
   }
 
-  document.getElementById("messages").appendChild(div);
-  document.getElementById("messages").scrollTop = 99999;
+  document.getElementById("messages").scrollTop = 999999;
+}
 
-  if(!currentChat) newChat();
-  const chat = chats.find(c => c.id === currentChat);
-  chat.messages.push({ role, content:text });
+/* CHAT MANAGEMENT */
+function newChat() {
+  const title = "Sohbet " + (chats.length + 1);
+  chats.push({ id: Date.now(), title, messages: [] });
+  currentChat = chats[chats.length - 1].id;
   save();
+  render();
 }
 
-/* ========== AUTO TITLE ========== */
-function autoTitle(text){
-  const chat = chats.find(c => c.id === currentChat);
-  if(chat.title === "Yeni Sohbet"){
-    chat.title = text.slice(0,20) + "...";
-    save();
-    render();
-  }
+function deleteChat() {
+  if (!currentChat) return;
+  chats = chats.filter((c) => c.id !== currentChat);
+  currentChat = chats[0] ? chats[0].id : null;
+  save();
+  render();
 }
 
-/* ========== FILE UPLOAD ========== */
-document.getElementById("fileInput")?.addEventListener("change", e=>{
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.onload = () => {
-    document.getElementById("input").value += "\n\n" + reader.result;
-  }
-  reader.readAsText(file);
-});
+function clearAll() {
+  if (!confirm("Tüm sohbetler silinsin mi?")) return;
+  chats = [];
+  currentChat = null;
+  save();
+  render();
+}
 
-/* ========== ENTER FIX ========== */
-document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("input");
-  input.addEventListener("keydown", e=>{
-    if(e.key === "Enter" && !e.ctrlKey) e.preventDefault();
-    if(e.key === "Enter" && e.ctrlKey) send();
-  });
+function exportChat(type) {
+  const chat = chats.find((c) => c.id === currentChat);
+  if (!chat) return;
 
-  if(!chats.length) newChat();
-  else {
-    currentChat = chats[0].id;
-    render();
-  }
-});
+  const data =
+    type === "json"
+      ? JSON.stringify(chat, null, 2)
+      : chat.messages.map((m) => `${m.role}: ${m.text}`).join("\n\n");
 
-/* ========== RENDER ========== */
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([data]));
+  a.download = "chat." + type;
+  a.click();
+}
 
-function render(){
+function save() {
+  localStorage.setItem("ygpt_chats", JSON.stringify(chats));
+}
+
+function render() {
   renderChats();
+  renderMessages();
 }
 
-function renderChats(){
+function renderChats() {
   const list = document.getElementById("chatList");
   list.innerHTML = "";
-  chats.forEach(chat=>{
+  chats.forEach((chat) => {
     const div = document.createElement("div");
     div.className = "chat-item";
-    div.textContent = chat.title;
-    div.onclick = () => { currentChat = chat.id; loadChat(); };
+    div.innerText = chat.title;
+    div.onclick = () => {
+      currentChat = chat.id;
+      render();
+    };
     list.appendChild(div);
   });
 }
 
-function loadChat(){
-  const msg = document.getElementById("messages");
-  msg.innerHTML = "";
-  const chat = chats.find(c=>c.id===currentChat);
-  chat.messages.forEach(m=>{
-    const div = document.createElement("div");
-    div.className = "message " + m.role;
-    div.innerHTML = marked.parse(m.content);
-    msg.appendChild(div);
+function renderMessages() {
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML = "";
+
+  const chat = chats.find((c) => c.id === currentChat);
+  if (!chat) return;
+
+  chat.messages.forEach((m) => {
+    addMessage(m.role, m.text);
   });
 }
 
-/* ========== SAVE ========== */
-function save(){
-  localStorage.setItem("yigitgpt_chats", JSON.stringify(chats));
+/* ENTER & SHIFT+ENTER */
+document.getElementById("input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    send();
+  }
+});
+
+/* THEME */
+function toggleTheme() {
+  const body = document.body;
+  body.className = body.className === "dark" ? "light" : "dark";
+  localStorage.setItem("theme", body.className);
 }
 
-/* ========== SPEECH ========== */
-function speak(){
-  const chat = chats.find(c=>c.id===currentChat);
-  const last = [...chat.messages].reverse().find(m=>m.role==="bot");
-  if(!last) return;
-  const ut = new SpeechSynthesisUtterance(last.content);
-  ut.lang = "tr-TR";
-  speechSynthesis.speak(ut);
-}
+/* LOAD */
+window.onload = () => {
+  const t = localStorage.getItem("theme");
+  if (t) document.body.className = t;
+
+  if (!chats.length) newChat();
+  else {
+    currentChat = chats[0].id;
+    render();
+  }
+};
