@@ -138,3 +138,52 @@ function exportChat(type){
 }
 
 if(!chats.length) newChat(); else{current=chats[0].id;render();}
+// ✅ AUTH
+async function login(){
+  const u = username.value;
+  const p = password.value;
+
+  const r = await fetch("/api/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({username:u,password:p})
+  });
+
+  const d = await r.json();
+  if(d.error) return alert(d.error);
+
+  localStorage.setItem("user", JSON.stringify(d));
+  location.reload();
+}
+
+async function uploadPhoto(){
+  const file = uploadInput.files[0];
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const f = new FormData();
+  f.append("photo", file);
+  f.append("userId", user.id);
+
+  const r = await fetch("/api/upload-profile",{method:"POST",body:f});
+  const d = await r.json();
+
+  user.photo = d.url;
+  localStorage.setItem("user", JSON.stringify(user));
+  profileImg.src = d.url;
+}
+
+function logout(){
+  localStorage.removeItem("user");
+  location.reload();
+}
+
+// ✅ LOGIN CHECK
+window.onload = ()=>{
+  const user = JSON.parse(localStorage.getItem("user"));
+  if(user){
+    authBox.style.display="none";
+    profileImg.src = user.photo;
+  }else{
+    document.getElementById("app").style.display="none";
+  }
+}
