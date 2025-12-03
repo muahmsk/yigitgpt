@@ -129,6 +129,18 @@ input.addEventListener("keydown", function(e){
     send();
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("input");
+
+  input.addEventListener("keydown", function(e){
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      console.log("ENTER ALGILANDI");
+      send();
+    }
+  });
+});
+
 
 
 
