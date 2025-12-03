@@ -121,5 +121,14 @@ window.onload = ()=>{
   const s = localStorage.getItem("session");
   if(s) startApp();
 }
+const input = document.getElementById("input");
+
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter" && !e.shiftKey){
+    e.preventDefault();
+    send();
+  }
+});
+
 
 
